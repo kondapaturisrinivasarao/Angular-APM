@@ -3,7 +3,7 @@ import { IProduct } from './product';
 import { ProductService } from './product.service';
 
 @Component({
-  selector: 'pm-products',
+  // selector: 'pm-products',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.css']
 })
@@ -19,6 +19,7 @@ export class ProductListComponent implements OnInit {
   imageWidth:number=50;
   imagemargin:number=2;
   showImage:boolean=false;
+  errorMessage:string;
 
   private _listFilter: string ;
   public get listFilter(): string {
@@ -40,8 +41,15 @@ export class ProductListComponent implements OnInit {
     this.pageTitle='product list '+ message;
    }
   ngOnInit() {
-    this.products=this.productService.getProducts();
+    this.productService.getProducts().subscribe(
+      products => {
+        this.products = products
     this.filteredProducts=this.products;
+        
+      }
+        ,
+      error => this.errorMessage = <any>error
+    );
   }
 
 }
